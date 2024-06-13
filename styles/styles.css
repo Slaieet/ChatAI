@@ -35,6 +35,8 @@ body {
 
 .p-header {
     height: 50px;
+    position: sticky;
+    top: 0;
     background: var(--main-color);
     display: flex;
     justify-content: space-between;
@@ -76,6 +78,7 @@ body {
 
 main {
     padding: 30px 3%;
+    padding-bottom: 0;
 }
 
 .main_section {
@@ -83,16 +86,22 @@ main {
     border-radius: 10px;
     box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
     padding: 30px 50px;
+    margin-bottom: 90px;
 }
 
 .main_section_list {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px;
 }
 
 .main_section_list_cage {
     width: 100%;
+    display: flex;
+    gap:15px;
+}
+
+.main_section_list_cage .container {
     display: flex;
     gap:15px;
 }
@@ -131,11 +140,31 @@ main {
     }
 }
 
+/* user styles messages */
+
+.main_section_list_cage.user {
+    justify-content: end;
+
+    > .container {
+        max-width: 60%;
+    }
+
+    header {
+        order: 2;
+    }
+
+
+    .user-time {
+        justify-content: end;
+    }
+}
+
 .p-form {
     padding: 20px 3%;
     position: fixed;
     bottom: 0;
     width: 100%;
+    background: var(--second-color);
 }
 
 .p-form_cage {
