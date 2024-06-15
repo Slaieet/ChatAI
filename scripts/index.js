@@ -1,7 +1,11 @@
 
 import { CreateWebWorkerMLCEngine  } from 'https://esm.run/@mlc-ai/web-llm'
+import { obtainHour, toggleMessageOff ,flagMessageOff } from './functionsLogic.js'
 
 const SELECTED_MODEL = 'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC'
+
+
+toggleMessageOff(true)
 
 const engine = await CreateWebWorkerMLCEngine(
   new Worker('../workers/loadModelAI.js', { type: 'module' }),
@@ -9,6 +13,8 @@ const engine = await CreateWebWorkerMLCEngine(
   {
     initProgressCallback: (info) => {
       console.log('progress: ', info)
+
+      if (info.progress === 1) toggleMessageOff(false)
     }
   }
 )
@@ -19,11 +25,8 @@ const $form = $('#form-message')
 const $input = $('#input-message')
 const $template = $('#message-template')
 const $containerChat = $('#container-chat')
-const $buttonSend = $('#button-send')
 
 let messages = []
-
-let flagMessageOff = false
 
 $form.addEventListener('submit', async (event) => {
   event.preventDefault()
@@ -36,8 +39,7 @@ $form.addEventListener('submit', async (event) => {
   }
 
   addMessage(messageText, 'user')
-  flagMessageOff = true
-  $buttonSend.setAttribute('disabled', true)
+  toggleMessageOff(true)
 
   const userMessage = {
     role: 'user',
@@ -68,17 +70,8 @@ $form.addEventListener('submit', async (event) => {
     role: 'assistant',
     content: reply
   })
-  flagMessageOff = false
-  $buttonSend.removeAttribute('disabled')
+  toggleMessageOff(false)
 })
-
-const obtainHour = () => {
-  const newDate = new Date()
-  const hour = newDate.getHours()
-  const minute = newDate.getMinutes()
-
-  return `${hour}:${minute}`
-}
 
 const addMessage = ( text, sender ) => {
   const clonedTemplate = $template.content.cloneNode(true)
@@ -87,6 +80,7 @@ const addMessage = ( text, sender ) => {
   const $newMessage = $cage.querySelector('.message')
   const $who = $cage.querySelector('.who')
   const $time = $cage.querySelector('.time')
+  const $img = $cage.querySelector('.profile-image')
 
   const timeNow = obtainHour()
 
@@ -94,6 +88,7 @@ const addMessage = ( text, sender ) => {
   $who.textContent = sender === 'bot' ? 'ChatAI' : 'You'
   $time.textContent = timeNow
   $cage.classList.add(sender)
+  ;(sender === 'bot') ? $img.src = './icons/robot.svg' : $img.src = './icons/user.svg'
 
   $containerChat.appendChild($cage)
 

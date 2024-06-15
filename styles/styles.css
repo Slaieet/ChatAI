@@ -1,6 +1,7 @@
 :root {
     --main-color: #fff;
     --second-color: #f3f4f6;
+    --gray-color: #a1a1aa;
 }
 
 * {
@@ -66,7 +67,7 @@ body {
 }
 
 .p-header_ul a {
-    color: #666;
+    color: var(--gray-color);
     padding: 5px;
     border-bottom: 2px solid transparent;
     transition: color 0.2s, border-bottom 0.2s;
@@ -84,7 +85,7 @@ main {
 
 .main_section {
     background: var(--main-color);
-    border-radius: 10px;
+    border-radius: 15px;
     box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
     padding: 30px 50px;
     margin-bottom: 90px;
@@ -132,7 +133,7 @@ main {
         time {
             font-size: 0.8rem;
             align-self: flex-end;
-            color: #666;
+            color: var(--gray-color);
         }
     }
 
@@ -175,8 +176,8 @@ main {
     display: flex;
     align-items: center;
     background: var(--main-color);
-    border-radius: 5px;
     box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+    border-radius: 15px;
 }
 
 .p-form_input {
@@ -186,6 +187,12 @@ main {
     padding-left: 15px;
     padding-right: 64px;
     color: #000;
+    border: 2px solid transparent;
+    border-radius: 15px;
+
+    &:focus {
+        border: 2px solid var(--gray-color);
+    }
 }
 
 .send {
