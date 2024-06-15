@@ -1,9 +1,10 @@
 
-import { CreateMLCEngine } from 'https://esm.run/@mlc-ai/web-llm'
+import { CreateWebWorkerMLCEngine  } from 'https://esm.run/@mlc-ai/web-llm'
 
 const SELECTED_MODEL = 'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC'
 
-const engine = await CreateMLCEngine(
+const engine = await CreateWebWorkerMLCEngine(
+  new Worker('../workers/loadModelAI.js', { type: 'module' }),
   SELECTED_MODEL,
   {
     initProgressCallback: (info) => {
@@ -45,14 +46,28 @@ $form.addEventListener('submit', async (event) => {
 
   messages.push(userMessage)
 
-  const reply = await engine.chat.completions.create({
-    messages
+  const chunks = await engine.chat.completions.create({
+    messages,
+    stream: true
   })
   
-  const botMessage = reply.choices[0].message
-  console.log(botMessage)
-  messages.push(botMessage)
-  addMessage(botMessage.content, 'bot')
+  let reply = ""
+
+  const $newMessage = addMessage("", 'bot')
+
+  for await (const chunk of chunks) {
+    const choice = chunk.choices[0]
+    const content = choice?.delta?.content ?? ""
+    reply += content
+    $newMessage.textContent = reply
+  }
+
+  document.documentElement.scrollTop = document.body.scrollHeight
+  
+  messages.push({
+    role: 'assistant',
+    content: reply
+  })
   flagMessageOff = false
   $buttonSend.removeAttribute('disabled')
 })
@@ -83,6 +98,8 @@ const addMessage = ( text, sender ) => {
   $containerChat.appendChild($cage)
 
   document.documentElement.scrollTop = document.body.scrollHeight
+
+  return $newMessage
 
 }
 
