@@ -20,9 +20,11 @@ const $template = $('#message-template')
 const $containerChat = $('#container-chat')
 const $buttonSend = $('#button-send')
 
+let messages = []
+
 let flagMessageOff = false
 
-$form.addEventListener('submit', (event) => {
+$form.addEventListener('submit', async (event) => {
   event.preventDefault()
   if (flagMessageOff) return
 
@@ -36,11 +38,23 @@ $form.addEventListener('submit', (event) => {
   flagMessageOff = true
   $buttonSend.setAttribute('disabled', true)
 
-  setTimeout(() => {
-    addMessage('pero bueno, que tal bro!', 'bot')
-    flagMessageOff = false
-    $buttonSend.removeAttribute('disabled')
-  }, 2000);
+  const userMessage = {
+    role: 'user',
+    content: messageText
+  }
+
+  messages.push(userMessage)
+
+  const reply = await engine.chat.completions.create({
+    messages
+  })
+  
+  const botMessage = reply.choices[0].message
+  console.log(botMessage)
+  messages.push(botMessage)
+  addMessage(botMessage.content, 'bot')
+  flagMessageOff = false
+  $buttonSend.removeAttribute('disabled')
 })
 
 const obtainHour = () => {

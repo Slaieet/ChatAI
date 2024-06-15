@@ -60,12 +60,12 @@ body {
     width: 30px;
 }
 
-.p-header_nav {
+.p-header_ul {
     display: flex;
     gap: 20px;
 }
 
-.p-header_nav a {
+.p-header_ul a {
     color: #666;
     padding: 5px;
     border-bottom: 2px solid transparent;
