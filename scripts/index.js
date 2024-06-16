@@ -2,7 +2,7 @@
 import { CreateWebWorkerMLCEngine  } from 'https://esm.run/@mlc-ai/web-llm'
 import { obtainHour, toggleMessageOff ,flagMessageOff ,$ } from './functionsLogic.js'
 
-const SELECTED_MODEL = 'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC'
+const SELECTED_MODEL = 'gemma-2b-it-q4f16_1-MLC'
 
 const $sectionLoader = $('.loader-section')
 const $loader = $('#loader')
@@ -15,8 +15,6 @@ const engine = await CreateWebWorkerMLCEngine(
   SELECTED_MODEL,
   {
     initProgressCallback: (info) => {
-      console.log('progress: ', info)
-
       const indexStart = info.text.indexOf('[')
       const indexEnd = info.text.indexOf(']')
       const numbers = info.text.slice(indexStart + 1, indexEnd).split('/')
