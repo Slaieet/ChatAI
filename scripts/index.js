@@ -1,10 +1,13 @@
 
 import { CreateWebWorkerMLCEngine  } from 'https://esm.run/@mlc-ai/web-llm'
-import { obtainHour, toggleMessageOff ,flagMessageOff } from './functionsLogic.js'
+import { obtainHour, toggleMessageOff ,flagMessageOff ,$ } from './functionsLogic.js'
 
 const SELECTED_MODEL = 'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC'
 
-
+const $sectionLoader = $('.loader-section')
+const $loader = $('#loader')
+const $loaderText = $('#loaderText')
+const $mainSection = $('.main_section')
 toggleMessageOff(true)
 
 const engine = await CreateWebWorkerMLCEngine(
@@ -14,12 +17,22 @@ const engine = await CreateWebWorkerMLCEngine(
     initProgressCallback: (info) => {
       console.log('progress: ', info)
 
-      if (info.progress === 1) toggleMessageOff(false)
-    }
+      const indexStart = info.text.indexOf('[')
+      const indexEnd = info.text.indexOf(']')
+      const numbers = info.text.slice(indexStart + 1, indexEnd).split('/')
+      const percentage = Math.floor(numbers[0] / numbers[1] * 100)
+      if (percentage !== NaN) $loader.style.width = `${percentage}%`
+
+      $loaderText.textContent = info.text
+
+      if (info.progress === 1) {
+        toggleMessageOff(false)
+        $sectionLoader.style.display = 'none'
+        $mainSection.hidden = false
+      }
+    },
   }
 )
-
-const $ = element => document.querySelector(element)
 
 const $form = $('#form-message')
 const $input = $('#input-message')

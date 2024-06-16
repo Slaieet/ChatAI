@@ -18,3 +18,5 @@ export const toggleMessageOff = (action) => {
     $buttonSend.removeAttribute('disabled')
   }
 }
+
+export const $ = element => document.querySelector(element)

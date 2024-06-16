@@ -27,7 +27,7 @@
   </header>
 
   <main>
-    <section class="main_section">
+    <section class="main_section" hidden>
       <ul class="main_section_list" id="container-chat">
         <li class="main_section_list_cage">
           <div class="container">
@@ -57,10 +57,13 @@
     </div>
   </form>
 
-  <!-- <div id="loader">
+  <section class="loader-section">
+    <div id="loader-cage">
+      <div id="loader"></div>
+    </div>
+    <p id="loaderText">Start to fetch params</p>
+  </section>
 
-  </div> -->
-  
   <template id="message-template">
     <li class="main_section_list_cage">
       <div class="container">
