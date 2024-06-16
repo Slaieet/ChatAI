@@ -2,9 +2,10 @@
 import { CreateWebWorkerMLCEngine  } from 'https://esm.run/@mlc-ai/web-llm'
 import { obtainHour, toggleMessageOff ,flagMessageOff ,$ } from './functionsLogic.js'
 
-const SELECTED_MODEL = 'gemma-2b-it-q4f16_1-MLC'
+const SELECTED_MODEL = 'gemma-2b-it-q4f16_1-MLC-1k'
 
 const $sectionLoader = $('.loader-section')
+const $loaderCage = $('#loader-cage')
 const $loader = $('#loader')
 const $loaderText = $('#loaderText')
 const $mainSection = $('.main_section')
@@ -15,15 +16,17 @@ const engine = await CreateWebWorkerMLCEngine(
   SELECTED_MODEL,
   {
     initProgressCallback: (info) => {
-      const indexStart = info.text.indexOf('[')
-      const indexEnd = info.text.indexOf(']')
-      const numbers = info.text.slice(indexStart + 1, indexEnd).split('/')
-      const percentage = Math.floor(numbers[0] / numbers[1] * 100)
-      if (percentage !== NaN) $loader.style.width = `${percentage}%`
+      const { progress } = info
+      const percentage = Math.floor(progress * 100)
+      $loader.style.width = `${percentage}%`
 
       $loaderText.textContent = info.text
 
-      if (info.progress === 1) {
+      if (info.text.includes('Loading')) {
+        $loaderCage.style.display = 'none'
+      }
+
+      if (info.text.includes('Finish')) {
         toggleMessageOff(false)
         $sectionLoader.style.display = 'none'
         $mainSection.hidden = false
